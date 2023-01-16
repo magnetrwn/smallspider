@@ -30,6 +30,7 @@ class SmallSpider:
                              ('url(\"' , '\")'),
                              ('url('   , ')'  )]
 
+
   # Method: __init__
   # Description: creates a SmallSpider object and applies custom settings if present.
   #
@@ -50,6 +51,7 @@ class SmallSpider:
     self.search_strings = search_strings
     self.link_delimiters = link_delimiters
 
+
   # Method: dig
   # Description: start a website BFS using a list of continuously updating URLs and
   #              save links containing strings that are being searched.
@@ -69,8 +71,8 @@ class SmallSpider:
           page_queue.pop()
         if threading.active_count()-1 < desired_threads:
           threading.Thread(target=self.spider_bfs, args=(page_queue, page_queue_mutex,
-                                                         visited,    visited_mutex,
-                                                         files,      files_mutex)).start()
+                                                         visited, visited_mutex,
+                                                         files, files_mutex)).start()
         elif threading.active_count()-1 > desired_threads:
           threading.enumerate()[-1].join()
     except KeyboardInterrupt:
@@ -81,13 +83,14 @@ class SmallSpider:
     logging.warning('[ finished ] Found '+str(len(files))+' results.')
     return files
 
+
   # Method: spider_bfs
   # Description: grows out the BFS queue.
   #
   def spider_bfs(self,
                  page_queue, page_queue_mutex,
-                 visited,    visited_mutex,
-                 files,      files_mutex):
+                 visited, visited_mutex,
+                 files, files_mutex):
 
     page_queue_mutex.acquire()
     tpage = page_queue.pop()
@@ -108,6 +111,7 @@ class SmallSpider:
       files_mutex.release()
       #logging.info('\x1B[32m'+tpage+'\x1B[0m')
     return
+
 
   # Method: spider_checkout
   # Description: requests an HTTP/HTTPS page and parses possible links to add to
