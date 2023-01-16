@@ -200,9 +200,6 @@ def list_to_valuestr(value_list):
   return string
 
 
-# Run module directly
-# Description: put
-#
 if __name__ == "__main__":
   if len(sys.argv) < 2:
     sys.exit('\x1B[33mNo arguments.\x1B[0m')
@@ -212,20 +209,15 @@ if __name__ == "__main__":
     if arg[-1] == '/':
       sys.exit('\x1B[33mArguments must end without slash.\x1B[0m')
 
-  try:
-    logging.basicConfig(format='[%(asctime)s] %(levelname)-8s %(message)s',
-                        datefmt='%H%M%S',
-                        level=logging.INFO)
-    argument_urls = set()
-    for arg in sys.argv[1:]:
-      argument_urls.add(arg)
-    spider = SmallSpider(max_visited_pages=200, max_threads=8)
-    try:
-      files = spider.dig(argument_urls)
-      for result in files:
-        logging.info('\x1B[32m'+result+'\x1B[0m')
-    except KeyboardInterrupt:
-      pass
+  logging.basicConfig(format='[%(asctime)s] %(levelname)-8s %(message)s',
+                      datefmt='%H%M%S',
+                      level=logging.INFO)
+  argument_urls = set()
+  for arg in sys.argv[1:]:
+    argument_urls.add(arg)
+  
+  spider = SmallSpider(max_visited_pages=100, max_threads=8)
+  files = spider.dig(argument_urls)
 
-  except:
-    pass
+  for result in files:
+    logging.info('\x1B[32m'+result+'\x1B[0m')
